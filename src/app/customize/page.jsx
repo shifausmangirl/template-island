@@ -1,10 +1,10 @@
 "use client";
-import React, { useState } from 'react';
+import React, { Suspense, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowLeft, Download, Share2 } from 'lucide-react';
 
-export default function CustomizePage() {
+function CustomizeContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [templateData, setTemplateData] = useState({
@@ -158,5 +158,13 @@ export default function CustomizePage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function CustomizePage() {
+  return (
+    <Suspense fallback={null}>
+      <CustomizeContent />
+    </Suspense>
   );
 }
