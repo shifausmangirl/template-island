@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import prisma from '@/lib/prisma';
 
 export async function POST(request) {
   try {
@@ -13,12 +14,16 @@ export async function POST(request) {
       );
     }
 
-    // Log the data safely on the server console (Simulating writing to a real database)
-    console.log("Saving contact record to secure database backend:", { name, email, message, timestamp: new Date() });
+    const contact = await prisma.contact.create({
+      data: {
+        name,
+        email,
+        message
+      }
+    });
 
-    // Send positive callback acknowledgement to the UI layer
     return NextResponse.json(
-      { success: true, message: "Your message was recorded securely on our backend server cluster!" },
+      { success: true, message: 'Your message was recorded securely on our backend server cluster!', data: contact },
       { status: 200 }
     );
   } catch (error) {
